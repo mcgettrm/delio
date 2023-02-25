@@ -3,7 +3,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Facades\ProfitAndLossFacade;
+use App\ProfitAndLoss\ProfitAndLossFacade;
 
 /**
  * The responsibility of this class is to facilitate the return of profit and loss data for stock market symbols between yesterday and today.
@@ -29,9 +29,7 @@ class ProfitAndLossController extends Controller
      */
     public function getProfitAndLossSinceYesterday(array $symbols = ['MSFT','AAPL']): \Illuminate\Http\JsonResponse
     {
-        //Are the inputs in a format my application can understand?
-
-        return response()->json(['Working', 'json', 'response'], 200);
+        return response()->json($this->profitAndLossFacade->retrievePersistAndReturnProfitAndLoss(), 200);
     }
 
 

@@ -13,6 +13,7 @@ This Laravel app was developed by Michael McGettrick for Delio as part of their 
 
 ### Further Considerations:
 - Use Docker
+- Move Controller into 
 
 ### TODO:
 - Basic API endpoint

@@ -8,7 +8,7 @@ namespace App\ProfitAndLoss;
  */
 class ProfitAndLossFacade
 {
-    public function retrievePersistAndReturnProfitAndLoss():ProfitAndLossDTO {
+    public function retrievePersistAndReturnProfitAndLoss(array $symbols = ['MSFT','AAPL']):ProfitAndLossDTO {
         $this->retrieve();
         $this->persist();
         return $this->return();
