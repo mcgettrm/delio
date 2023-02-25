@@ -36,3 +36,6 @@ This Laravel app was developed by Michael McGettrick for Delio as part of their 
   - List and dependencies not described in composer.json
 
 
+### Database
+- Stock ID
+- Date
