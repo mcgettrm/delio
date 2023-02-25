@@ -2,7 +2,7 @@
 This Laravel app was developed by Michael McGettrick for Delio as part of their recruitment process.
 
 ### Setup Instructions
-* Register for an API Token at https://finnhub.io/docs/api/quote
+* Register for an API Token at https://finnhub.io/register
 * Add your database connection details to the .env file in the root of this project
 * Add your API Token to the .env file in the root of this project
 

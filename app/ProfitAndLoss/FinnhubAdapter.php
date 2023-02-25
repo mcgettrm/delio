@@ -22,5 +22,7 @@ class FinnhubAdapter
         //TODO::Return a DTO
 
 
+        //For each symbol, should return the current price and yesterday's closing price.
+
     }
 }
