@@ -8,17 +8,49 @@ namespace App\ProfitAndLoss;
  */
 class ProfitAndLossFacade
 {
-    public function retrievePersistAndReturnProfitAndLoss(array $symbols = ['MSFT','AAPL']):ProfitAndLossDTO {
-        $this->retrieve();
+    /**
+     * @var FinnhubAdapter $finnhubAdapter
+     */
+    private FinnhubAdapter $finnhubAdapter;
+
+    /**
+     * ProfitAndLossFacade constructor.
+     * @param FinnhubAdapter $finnhubAdapter
+     */
+    public function __construct(FinnhubAdapter $finnhubAdapter)
+    {
+        $this->finnhubAdapter = $finnhubAdapter;
+    }
+
+    /**
+     * Public accessor the Profit and Loss subsystem, this interface abstracts the underlying complexity of the operations required to generate the profit and loss output.
+     * @param array|string[] $symbols
+     * @return ProfitAndLossDTO
+     */
+    public function retrievePersistAndReturnProfitAndLoss(array $symbols = ['MSFT','AAPL']): ProfitAndLossDTO
+    {
+        $this->retrieve($symbols);
         $this->persist();
         return $this->return();
     }
 
-    private function retrieve(){}
+    /**
+     * @param array $symbols
+     */
+    private function retrieve(array $symbols)
+    {
+        //TODO::Put this in a factory, it isn't testable
+        $date = new \DateTime();
+        $this->finnhubAdapter->getPricesForSymbolsAndDate($symbols, $date);
+    }
 
-    private function persist(){}
+    private function persist()
+    {
 
-    private function return():ProfitAndLossDTO {
+    }
+
+    private function return(): ProfitAndLossDTO
+    {
         //TODO::Load via Factory method - get "new" keyword out of business layer.
         $dto = new ProfitAndLossDTO();
         $dto->setSymbolProfitAndLoss('AAPL', -2.13);
