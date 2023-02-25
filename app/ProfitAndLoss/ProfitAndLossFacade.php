@@ -31,7 +31,12 @@ class ProfitAndLossFacade
     {
         $this->retrieve($symbols);
         $this->persist();
+        $this->calculate();
         return $this->return();
+    }
+
+    private function calculate(){
+
     }
 
     /**
@@ -39,9 +44,7 @@ class ProfitAndLossFacade
      */
     private function retrieve(array $symbols)
     {
-        //TODO::Put this in a factory, it isn't testable
-        $date = new \DateTime();
-        $this->finnhubAdapter->getPricesForSymbolsAndDate($symbols, $date);
+       $prices = $this->finnhubAdapter->getPricesForSymbols($symbols);
     }
 
     private function persist()

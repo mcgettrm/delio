@@ -14,6 +14,10 @@ This Laravel app was developed by Michael McGettrick for Delio as part of their 
 ### Further Considerations:
 - Use Docker
 - Move Controller into 
+- .env file the best place for API token?
+- Use Finnhub PHP library? // Ran into problems with Laravel Guzzle version conflicts
+- DTOs a bit too loose?
+- Tempted to return a 201 response on success because persistent records were created // Decided not to as this may be intentional
 
 ### TODO:
 - Basic API endpoint
