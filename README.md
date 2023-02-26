@@ -1,11 +1,16 @@
 # Delio Tech Test
 This Laravel app was developed by Michael McGettrick for Delio as part of their recruitment process.
 
+### Additional Documentation
+Additional documentation is available in the "misc" folder in the root of this repo, including:
+* Initial design of the system
+* Copy of the original brief (also available at https://github.com/deliowales/php-technical-test)
+* Specific Finnhub endpoint documentation: https://finnhub.io/docs/api/quote
+
 ### Setup Instructions
 * Register for an API Token at https://finnhub.io/register
 * Add your database connection details to the .env file in the root of this project
 * Add your API Token to the .env file in the root of this project
-
 
 ### Dependencies
 - PHP 8.1.16
@@ -40,7 +45,3 @@ This Laravel app was developed by Michael McGettrick for Delio as part of their 
   - Swagger/OpenAPI doc to describe API endpoints
   - List and dependencies not described in composer.json
 
-
-### Database
-- Stock ID
-- Date
