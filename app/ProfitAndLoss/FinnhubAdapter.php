@@ -51,19 +51,23 @@ class FinnhubAdapter
      * @return array
      * @throws Exception
      */
-    public function getPricesForSymbols(array $symbols): array
+    public function getStockDataForSymbols(array $symbols): array
     {
-        $prices = [];
+        $stockData = [];
         foreach($symbols as $symbol){
             $symbolData = $this->getPricesForSymbol($symbol);
-            $symbolData['symbol'] = $symbol;
-            $prices[$symbol] = $symbolData;
+            $cleanData = [];
+            $cleanData['symbol'] = $symbol;
+            $cleanData['current_value'] = $symbolData['c'];
+            $cleanData['previous_day_close_value'] = $symbolData['pc'];
+            $cleanData['effective_date'] = date('Y-m-d H:i:s', $symbolData['t']);
+            $stockData[$symbol] = $cleanData;
         }
 
         //TODO::Return a DTO
 
         //For each symbol, should return the current price and yesterday's closing price.
-        return $prices;
+        return $stockData;
 
     }
 

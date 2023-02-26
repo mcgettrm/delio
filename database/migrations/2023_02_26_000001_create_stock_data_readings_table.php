@@ -14,8 +14,9 @@ class CreateStockDataReadingsTable extends Migration
     public function up()
     {
         Schema::create('stock_data_readings', function (Blueprint $table) {
+            //ID is automatically AI and PK
             $table->id();
-            $table->string('symbol');
+            $table->string('symbol', 16);
             $table->float('current_value');
             $table->float('previous_day_close_value');
             $table->timestamp('effective_date');

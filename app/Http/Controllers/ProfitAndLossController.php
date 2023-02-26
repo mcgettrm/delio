@@ -36,7 +36,7 @@ class ProfitAndLossController extends Controller
             $data = $this->profitAndLossFacade->retrievePersistAndReturnProfitAndLoss();
             $responseCode = 200;
         } catch(\Exception $exception){
-            $data = [];
+            $data = ['Something went wrong. Please try again shortly. If you continue to see this message, please raise a support ticket.'];
             //Assuming Server error for now
             $responseCode = 500;
 

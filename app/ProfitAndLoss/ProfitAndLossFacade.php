@@ -1,6 +1,8 @@
 <?php
 namespace App\ProfitAndLoss;
 
+use App\Models\StockDataReading;
+
 /**
  * This class is responsible for generating a list of profit and losses between today and yesterday for a given set of ticker symbols
  * Class ProfitAndLossFacade
@@ -14,12 +16,22 @@ class ProfitAndLossFacade
     private FinnhubAdapter $finnhubAdapter;
 
     /**
+     * @var StockDataReadingRepository $stockDataReadingRepository
+     */
+    private StockDataReadingRepository $stockDataReadingRepository;
+
+    /**
      * ProfitAndLossFacade constructor.
      * @param FinnhubAdapter $finnhubAdapter
+     * @param StockDataReadingRepository $stockDataReadingRepository
      */
-    public function __construct(FinnhubAdapter $finnhubAdapter)
+    public function __construct(
+        FinnhubAdapter $finnhubAdapter,
+        StockDataReadingRepository $stockDataReadingRepository
+    )
     {
         $this->finnhubAdapter = $finnhubAdapter;
+        $this->stockDataReadingRepository = $stockDataReadingRepository;
     }
 
     /**
@@ -50,8 +62,10 @@ class ProfitAndLossFacade
      * @throws \Exception
      */
     private function sanitiseSymbols(array &$symbols){
+        //TODO:: Probably merits a class of its own
         foreach($symbols as &$symbol){
-            if(!is_string($symbol)){
+            //Check whether this symbol complies with database length
+            if(!is_string($symbol) || (mb_strlen($symbol) > 16 )){
                 throw new \Exception('Invalid symbol passed to ProfitAndLossFacade');
             }
             $symbol = strtoupper($symbol);
@@ -62,9 +76,9 @@ class ProfitAndLossFacade
      * @param array $symbols
      * @throws \Exception
      */
-    private function retrieve(array $symbols)
+    private function retrieve(array $symbols): array
     {
-       return $this->finnhubAdapter->getPricesForSymbols($symbols);
+       return $this->finnhubAdapter->getStockDataForSymbols($symbols);
     }
 
     /**
@@ -72,7 +86,17 @@ class ProfitAndLossFacade
      */
     private function persist(array $data): void
     {
+        foreach($data as $datum){
+            $this->stockDataReadingRepository->create($datum);
+        }
+    }
 
+    /**
+     * @return StockDataReading
+     */
+    private function getNewModel(){
+        //TODO:: Move to factory
+        return new StockDataReading();
     }
 
     private function return(array $calculatedProfitAndLoss): ProfitAndLossDTO
