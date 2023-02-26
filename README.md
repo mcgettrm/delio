@@ -1,6 +1,8 @@
 # Delio Tech Test
 This Laravel app was developed by Michael McGettrick for Delio as part of their recruitment process.
 
+Please note that, in the spirit of the task, I've taken creative licence to over-engineer this a little. I'd be very happy to discuss this. 
+
 ### Additional Documentation
 Additional documentation is available in the "misc" folder in the root of this repo, including:
 * Initial design of the system
@@ -26,6 +28,10 @@ Additional documentation is available in the "misc" folder in the root of this r
 - Tempted to return a 201 response on success because persistent records were created // Decided not to as this may be intentional
 - Caching?
 - Remove users table and Laravel bootstrapping?
+- Should I allow models to go past the repository at all?
+- How to mock ORM given that they use static access
+- Logger also static - seems to be a lot of statics here, might be missing something regarding unit testing in Laravel
+- Missing type hinting in Eloquent classes in PHPStorm
 
 ### TODO:
 - Basic API endpoint

@@ -21,13 +21,19 @@ class ProfitAndLossFacade
     private StockDataReadingRepository $stockDataReadingRepository;
 
     /**
+     * @var ProfitAndLossStrategyInterface
+     */
+    private ProfitAndLossStrategyInterface $profitAndLossStrategy;
+    /**
      * ProfitAndLossFacade constructor.
      * @param FinnhubAdapter $finnhubAdapter
      * @param StockDataReadingRepository $stockDataReadingRepository
+     * @param ProfitAndLossStrategyInterface $profitAndLossStrategy
      */
     public function __construct(
         FinnhubAdapter $finnhubAdapter,
-        StockDataReadingRepository $stockDataReadingRepository
+        StockDataReadingRepository $stockDataReadingRepository,
+        ProfitAndLossStrategyInterface $profitAndLossStrategy
     )
     {
         $this->finnhubAdapter = $finnhubAdapter;
@@ -43,18 +49,48 @@ class ProfitAndLossFacade
     public function retrievePersistAndReturnProfitAndLoss(array $symbols = ['MSFT','AAPL']): ProfitAndLossDTO
     {
         $this->sanitiseSymbols($symbols);
-        $data = $this->retrieve($symbols);
+        $data = $this->finnhubAdapter->getStockDataForSymbols($symbols);
+
+        //Note, specific requirement that these be persisted first and then retrieved before being used in calculation
         $this->persist($data);
-        $calculatedProfitAndLoss = $this->calculate();
-        return $this->return($calculatedProfitAndLoss);
+        $latestReadings = $this->getLatestReadingsForSymbols($symbols);
+        return $this->calculate($latestReadings);
     }
 
     /**
-     *
+     * @param array $symbols
+     * @return array
      */
-    private function calculate(): array
+    private function getLatestReadingsForSymbols(array $symbols): array
     {
-        return [];
+        $readings = [];
+        foreach($symbols as $symbol){
+            $readings[] = $this->stockDataReadingRepository->getLatestReadingBySymbol($symbol);
+        }
+        return $readings;
+    }
+
+    /**
+     * Takes an array of StockDataReading models and calculates the profit and loss for each one
+     * @param array $readings
+     * @param int $numberOfShares
+     * @return ProfitAndLossDTO
+     */
+    private function calculate(array $readings, int $numberOfShares = 10): ProfitAndLossDTO
+    {
+        //TODO:: NOT HERE - Factory required
+        $dto = new ProfitAndLossDTO();
+
+        /**
+         * @var StockDataReading $reading
+         */
+        foreach($readings as $reading){
+            $pl = $this->profitAndLossStrategy->calculateProfitAndLoss($reading);
+            $symbol = $reading->getSymbol();
+            $dto->setSymbolProfitAndLoss($symbol, $pl);
+        }
+
+        return $dto;
     }
 
     /**
@@ -73,15 +109,6 @@ class ProfitAndLossFacade
     }
 
     /**
-     * @param array $symbols
-     * @throws \Exception
-     */
-    private function retrieve(array $symbols): array
-    {
-       return $this->finnhubAdapter->getStockDataForSymbols($symbols);
-    }
-
-    /**
      * @param array $data
      */
     private function persist(array $data): void
@@ -89,14 +116,6 @@ class ProfitAndLossFacade
         foreach($data as $datum){
             $this->stockDataReadingRepository->create($datum);
         }
-    }
-
-    /**
-     * @return StockDataReading
-     */
-    private function getNewModel(){
-        //TODO:: Move to factory
-        return new StockDataReading();
     }
 
     private function return(array $calculatedProfitAndLoss): ProfitAndLossDTO
