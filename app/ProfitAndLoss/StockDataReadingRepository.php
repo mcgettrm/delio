@@ -27,7 +27,7 @@ class StockDataReadingRepository
     public function getLatestReadingBySymbol(string $symbol): mixed
     {
         //Get the the TOP x number of stock readings ordered by created_at
-        $stockData =  StockDataReading::where('symbol', $symbol)->orderBy('created_at')->first();
+        $stockData =  StockDataReading::where('symbol', $symbol)->orderBy('created_at','DESC')->first();
 
         return $stockData;
     }

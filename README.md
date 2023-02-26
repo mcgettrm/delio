@@ -9,11 +9,16 @@ Additional documentation is available in the "misc" folder in the root of this r
 * Copy of the original brief (also available at https://github.com/deliowales/php-technical-test)
 * Specific Finnhub endpoint documentation: https://finnhub.io/docs/api/quote
 
+### Initial Approach
+This was the initial target system design:
+![If this image is not displaying, please find it in the misc folder](misc/system_design.png "System Design")
+
 ### Setup Instructions
 * Register for an API Token at https://finnhub.io/register
 * Add your database connection details to the .env file in the root of this project
 * Add your API Token to the .env file in the root of this project
 * Run `php artisan migrate` to set up the database
+* Navigate to `{YOUR_HOSTNAME}/api/profitandloss` to see your first calculation
 
 ### Dependencies
 - PHP 8.1.16
@@ -21,7 +26,6 @@ Additional documentation is available in the "misc" folder in the root of this r
 
 ### Further Considerations:
 - Use Docker
-- Move Controller into 
 - .env file the best place for API token?
 - Use Finnhub PHP library? // Ran into problems with Laravel Guzzle version conflicts
 - DTOs a bit too loose?
@@ -32,6 +36,9 @@ Additional documentation is available in the "misc" folder in the root of this r
 - How to mock ORM given that they use static access
 - Logger also static - seems to be a lot of statics here, might be missing something regarding unit testing in Laravel
 - Missing type hinting in Eloquent classes in PHPStorm
+- Add and handle GET parameters for API route 
+- Abstract Class for Repositories? //Would be really cool to show off but probably too much
+- Implement a strategy for percentage profit/loss calculations
 
 ### TODO:
 - Basic API endpoint

@@ -12,5 +12,10 @@ use App\Models\StockDataReading;
  */
 interface ProfitAndLossStrategyInterface
 {
-    public function calculateProfitAndLoss(StockDataReading $stockDataReading): float;
+    /**
+     * @param StockDataReading $stockDataReading
+     * @param int $numberOfStock
+     * @return float
+     */
+    public function calculateProfitAndLoss(StockDataReading $stockDataReading, int $numberOfStock = 1): float;
 }

@@ -26,14 +26,15 @@ class ProfitAndLossController extends Controller
 
     /**
      * @param array|string[] $symbols
+     * @param int $numberOfShares
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getProfitAndLossSinceYesterday(array $symbols = ['MSFT','AAPL']): \Illuminate\Http\JsonResponse
+    public function getProfitAndLossSinceYesterday(array $symbols = ['MSFT','AAPL'], int $numberOfShares = 10): \Illuminate\Http\JsonResponse
     {
 
         //TODO:: SANITISE THOSE INPUTS!!
         try{
-            $data = $this->profitAndLossFacade->retrievePersistAndReturnProfitAndLoss();
+            $data = $this->profitAndLossFacade->retrievePersistAndReturnProfitAndLoss($symbols, $numberOfShares);
             $responseCode = 200;
         } catch(\Exception $exception){
             $data = ['Something went wrong. Please try again shortly. If you continue to see this message, please raise a support ticket.'];

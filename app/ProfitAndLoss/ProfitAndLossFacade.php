@@ -38,23 +38,25 @@ class ProfitAndLossFacade
     {
         $this->finnhubAdapter = $finnhubAdapter;
         $this->stockDataReadingRepository = $stockDataReadingRepository;
+        $this->profitAndLossStrategy = $profitAndLossStrategy;
     }
 
     /**
      * Public accessor the Profit and Loss subsystem, this interface abstracts the underlying complexity of the operations required to generate the profit and loss output.
      * @param array|string[] $symbols
+     * @param int $numberOfShares
      * @return ProfitAndLossDTO
      * @throws \Exception
      */
-    public function retrievePersistAndReturnProfitAndLoss(array $symbols = ['MSFT','AAPL']): ProfitAndLossDTO
+    public function retrievePersistAndReturnProfitAndLoss(array $symbols = ['MSFT','AAPL'], int $numberOfShares = 1): ProfitAndLossDTO
     {
         $this->sanitiseSymbols($symbols);
         $data = $this->finnhubAdapter->getStockDataForSymbols($symbols);
 
         //Note, specific requirement that these be persisted first and then retrieved before being used in calculation
         $this->persist($data);
-        $latestReadings = $this->getLatestReadingsForSymbols($symbols);
-        return $this->calculate($latestReadings);
+        $latestReadings = $this->getLatestReadingsForSymbols($symbols, $numberOfShares);
+        return $this->calculate($latestReadings, $numberOfShares);
     }
 
     /**
@@ -76,7 +78,7 @@ class ProfitAndLossFacade
      * @param int $numberOfShares
      * @return ProfitAndLossDTO
      */
-    private function calculate(array $readings, int $numberOfShares = 10): ProfitAndLossDTO
+    private function calculate(array $readings, int $numberOfShares = 1): ProfitAndLossDTO
     {
         //TODO:: NOT HERE - Factory required
         $dto = new ProfitAndLossDTO();
@@ -85,7 +87,7 @@ class ProfitAndLossFacade
          * @var StockDataReading $reading
          */
         foreach($readings as $reading){
-            $pl = $this->profitAndLossStrategy->calculateProfitAndLoss($reading);
+            $pl = $this->profitAndLossStrategy->calculateProfitAndLoss($reading, $numberOfShares);
             $symbol = $reading->getSymbol();
             $dto->setSymbolProfitAndLoss($symbol, $pl);
         }
@@ -116,15 +118,5 @@ class ProfitAndLossFacade
         foreach($data as $datum){
             $this->stockDataReadingRepository->create($datum);
         }
-    }
-
-    private function return(array $calculatedProfitAndLoss): ProfitAndLossDTO
-    {
-        //TODO::Load via Factory method - get "new" keyword out of business layer.
-        $dto = new ProfitAndLossDTO();
-        $dto->setSymbolProfitAndLoss('AAPL', -2.13);
-        $dto->setSymbolProfitAndLoss('MSFT', 4.19);
-
-        return $dto;
     }
 }
