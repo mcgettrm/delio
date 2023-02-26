@@ -36,10 +36,12 @@ class FinnhubAdapter
 
     /**
      * FinnhubAdapter constructor.
+     * @param string $finnhubToken
+     * @throws Exception
      */
-    public function __construct(){
-        //TODO:: This should be injected.
-        $this->token = env('FINNHUB_API_KEY');
+    public function __construct(string $finnhubToken)
+    {
+        $this->token = $finnhubToken;
         if(strlen($this->token) === 0){
             throw new Exception('No Finnhub key configured on the server.');
         }

@@ -25,6 +25,11 @@ class AppServiceProvider extends ServiceProvider
                 $app->make(GrossProfitAndLossStrategy::class),
             );
         });
+
+        $this->app->bind(FinnhubAdapter::class,function($app){
+            $finnhubToken = env('FINNHUB_API_KEY');
+            return new FinnhubAdapter($finnhubToken);
+        });
     }
 
     /**
