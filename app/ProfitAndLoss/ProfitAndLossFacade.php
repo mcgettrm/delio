@@ -26,33 +26,56 @@ class ProfitAndLossFacade
      * Public accessor the Profit and Loss subsystem, this interface abstracts the underlying complexity of the operations required to generate the profit and loss output.
      * @param array|string[] $symbols
      * @return ProfitAndLossDTO
+     * @throws \Exception
      */
     public function retrievePersistAndReturnProfitAndLoss(array $symbols = ['MSFT','AAPL']): ProfitAndLossDTO
     {
-        $this->retrieve($symbols);
-        $this->persist();
-        $this->calculate();
-        return $this->return();
+        $this->sanitiseSymbols($symbols);
+        $data = $this->retrieve($symbols);
+        $this->persist($data);
+        $calculatedProfitAndLoss = $this->calculate();
+        return $this->return($calculatedProfitAndLoss);
     }
 
-    private function calculate(){
-
+    /**
+     *
+     */
+    private function calculate(): array
+    {
+        return [];
     }
 
     /**
      * @param array $symbols
+     * @throws \Exception
+     */
+    private function sanitiseSymbols(array &$symbols){
+        foreach($symbols as &$symbol){
+            if(!is_string($symbol)){
+                throw new \Exception('Invalid symbol passed to ProfitAndLossFacade');
+            }
+            $symbol = strtoupper($symbol);
+        }
+    }
+
+    /**
+     * @param array $symbols
+     * @throws \Exception
      */
     private function retrieve(array $symbols)
     {
-       $prices = $this->finnhubAdapter->getPricesForSymbols($symbols);
+       return $this->finnhubAdapter->getPricesForSymbols($symbols);
     }
 
-    private function persist()
+    /**
+     * @param array $data
+     */
+    private function persist(array $data): void
     {
 
     }
 
-    private function return(): ProfitAndLossDTO
+    private function return(array $calculatedProfitAndLoss): ProfitAndLossDTO
     {
         //TODO::Load via Factory method - get "new" keyword out of business layer.
         $dto = new ProfitAndLossDTO();

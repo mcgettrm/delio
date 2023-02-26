@@ -44,4 +44,5 @@ Additional documentation is available in the "misc" folder in the root of this r
   - Further considerations
   - Swagger/OpenAPI doc to describe API endpoints
   - List and dependencies not described in composer.json
+- Caching?
 

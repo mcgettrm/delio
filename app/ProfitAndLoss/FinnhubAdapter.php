@@ -46,15 +46,6 @@ class FinnhubAdapter
     }
 
     /**
-     * Generates the API base URL from the base URL and the API version
-     * @return string
-     */
-    private function getAPIBase(): string
-    {
-        return 'https://'.$this->finnhubBaseUrl . $this->apiVersionPathString;
-    }
-
-    /**
      * @param array $symbols
      * @param DateTime $date
      * @return array
@@ -64,7 +55,9 @@ class FinnhubAdapter
     {
         $prices = [];
         foreach($symbols as $symbol){
-            $prices[] = $this->getPricesForSymbol($symbol);
+            $symbolData = $this->getPricesForSymbol($symbol);
+            $symbolData['symbol'] = $symbol;
+            $prices[$symbol] = $symbolData;
         }
 
         //TODO::Return a DTO
@@ -77,10 +70,10 @@ class FinnhubAdapter
     /**
      * This is where the magic happens, get the current price and yesterday's closing price for a given symbol.
      * @param string $symbol
-     * @return string
+     * @return array
      * @throws Exception
      */
-    public function getPricesForSymbol(string $symbol): string
+    public function getPricesForSymbol(string $symbol): array
     {
 
         $url = $this->getAPIBase()."/quote?symbol={$symbol}&token={$this->token}";
@@ -112,6 +105,26 @@ class FinnhubAdapter
 
         curl_close($curl);
 
-        return $response;
+        return $this->parseJson($response);
+    }
+
+
+    /**
+     * Generates the API base URL from the base URL and the API version
+     * @return string
+     */
+    private function getAPIBase(): string
+    {
+        return 'https://'.$this->finnhubBaseUrl . $this->apiVersionPathString;
+    }
+
+    /**
+     * @param string $json
+     * @return array
+     */
+    private function parseJson(string $json): array
+    {
+        $json = json_decode($json, true);
+        return $json;
     }
 }
