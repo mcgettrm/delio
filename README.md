@@ -11,6 +11,7 @@ Additional documentation is available in the "misc" folder in the root of this r
 * Register for an API Token at https://finnhub.io/register
 * Add your database connection details to the .env file in the root of this project
 * Add your API Token to the .env file in the root of this project
+* Run `php artisan migrate` to set up the database
 
 ### Dependencies
 - PHP 8.1.16
@@ -23,6 +24,8 @@ Additional documentation is available in the "misc" folder in the root of this r
 - Use Finnhub PHP library? // Ran into problems with Laravel Guzzle version conflicts
 - DTOs a bit too loose?
 - Tempted to return a 201 response on success because persistent records were created // Decided not to as this may be intentional
+- Caching?
+- Remove users table and Laravel bootstrapping?
 
 ### TODO:
 - Basic API endpoint
@@ -44,5 +47,5 @@ Additional documentation is available in the "misc" folder in the root of this r
   - Further considerations
   - Swagger/OpenAPI doc to describe API endpoints
   - List and dependencies not described in composer.json
-- Caching?
+
 
