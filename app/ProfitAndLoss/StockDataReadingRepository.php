@@ -6,6 +6,10 @@ namespace App\ProfitAndLoss;
 
 use App\Models\StockDataReading;
 
+/**
+ * Class StockDataReadingRepository
+ * @package App\ProfitAndLoss
+ */
 class StockDataReadingRepository
 {
 
