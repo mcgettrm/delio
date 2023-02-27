@@ -43,6 +43,10 @@ class GrossProfitAndLossTest extends TestCase
 
     /**
      * Checks that we get the expected result down the "happy path".
+     *
+     * This test actually also covers the scenario that results are returned to two decimal places.
+     * During testing, a current value of 41.20 and a closing value of 39.13 with a quantity of 1 would return
+     *  2.0700000000000003 <-- we want such a number to be 2dp.
      */
     public function test_resultReturnsCorrectCalculationForSingleQuantity(){
         $mockReading = $this->getMockBuilder(StockDataReading::class)->getMock();
@@ -54,24 +58,4 @@ class GrossProfitAndLossTest extends TestCase
         $this->assertEquals($expected,$actual, "Incorrect result returned for calculation. Expected: {$expected} actual: {$actual}");
     }
 
-
-    /**
-     * This test checks that results are returned to two decimal places.
-     * During testing, a current value of 41.20 and a closing value of 39.13 with a quantity of 1 would return
-     *  2.0700000000000003 <-- we want such a number to be 2dp.
-     */
-    public function test_resultReturnsTo2dp(){
-        $mockReading = $this->getMockBuilder(StockDataReading::class)->getMock();
-        $mockReading->method('getCurrentValue')->willReturn(41.20);
-        $mockReading->method('getClosingValue')->willReturn(39.13);
-
-        $result = $this->grossProfitLossStrategy->calculateProfitAndLoss($mockReading, 1);
-        $expected = 2;
-        $numberOfDecimals = 0;
-
-        [$digits,$decimals] = explode('.',$result);
-
-        $actual = count($decimals);
-        $this->assertEquals($expected,$actual, "Incorrect decimal precision returned. Expected:{$expected} Actual: {$actual}");
-    }
 }

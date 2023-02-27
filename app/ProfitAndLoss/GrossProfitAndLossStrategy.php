@@ -21,7 +21,9 @@ class GrossProfitAndLossStrategy implements ProfitAndLossStrategyInterface
      */
     #[Pure] public function calculateProfitAndLoss(StockDataReading $stockDataReading, int $numberOfStock = 1): float
     {
-        //TODO:: Don't trust floating point arithmetic in PHP
-        return ($stockDataReading->getCurrentValue() - $stockDataReading->getClosingValue()) * $numberOfStock;
+        $current = $stockDataReading->getCurrentValue();
+        $closing = $stockDataReading->getClosingValue();
+        $modifiedByQuantity = ($current - $closing) * $numberOfStock;
+        return round($modifiedByQuantity,2);
     }
 }
