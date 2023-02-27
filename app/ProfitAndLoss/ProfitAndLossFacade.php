@@ -55,7 +55,7 @@ class ProfitAndLossFacade
 
         //Note, specific requirement that these be persisted first and then retrieved before being used in calculation
         $this->persist($data);
-        $latestReadings = $this->getLatestReadingsForSymbols($symbols, $numberOfShares);
+        $latestReadings = $this->getLatestReadingsForSymbols($symbols);
         return $this->calculate($latestReadings, $numberOfShares);
     }
 
@@ -103,7 +103,7 @@ class ProfitAndLossFacade
         //TODO:: Probably merits a class of its own
         foreach($symbols as &$symbol){
             //Check whether this symbol complies with database length
-            if(!is_string($symbol) || (mb_strlen($symbol) > 16 )){
+            if(!is_string($symbol) || !strlen($symbol) || (mb_strlen($symbol) > 16 )){
                 throw new \Exception('Invalid symbol passed to ProfitAndLossFacade');
             }
             $symbol = strtoupper($symbol);

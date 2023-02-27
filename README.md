@@ -39,6 +39,7 @@ This was the initial target system design:
 - Add and handle GET parameters for API route 
 - Abstract Class for Repositories? //Would be really cool to show off but probably too much
 - Implement a strategy for percentage profit/loss calculations
+- Specific exceptions
 
 ### TODO:
 - Basic API endpoint
