@@ -7,6 +7,7 @@ use App\Models\StockDataReading;
 use App\ProfitAndLoss\FinnhubAdapter;
 use App\ProfitAndLoss\GrossProfitAndLossStrategy;
 use App\ProfitAndLoss\ProfitAndLossFacade;
+use App\ProfitAndLoss\ProfitAndLossFactory;
 use App\ProfitAndLoss\StockDataReadingRepository;
 use JetBrains\PhpStorm\Pure;
 use PHPUnit\Framework\TestCase;
@@ -40,11 +41,13 @@ class ProfitLossFacadeTest extends TestCase
         $finnhubAdapterDummy = $this->createMock(FinnhubAdapter::class);
         $stockDataReadingRepoDummy = $this->createMock(StockDataReadingRepository::class);
         $grossPLStrategy = $this->getGrossProfitAndLossStrategy();
+        $factoryDummy = $this->createMock(ProfitAndLossFactory::class);
 
         return new ProfitAndLossFacade(
             $finnhubAdapterDummy,
             $stockDataReadingRepoDummy,
             $grossPLStrategy,
+            $factoryDummy
         );
     }
 
@@ -131,10 +134,13 @@ class ProfitLossFacadeTest extends TestCase
         $grossPLStrategyMock = $this->createMock(GrossProfitAndLossStrategy::class);
         $grossPLStrategyMock->expects($this->exactly($numberOfSymbols))->method('calculateProfitAndLoss');
 
+        $factoryDummy = $this->createMock(ProfitAndLossFactory::class);
+
         $facade = new ProfitAndLossFacade(
             $finnhubAdapterMock,
             $stockDataReadingRepoMock,
             $grossPLStrategyMock,
+            $factoryDummy
         );
 
         $dto = $facade->retrievePersistAndReturnProfitAndLoss($symbols);

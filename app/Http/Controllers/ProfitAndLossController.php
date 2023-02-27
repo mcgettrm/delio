@@ -32,7 +32,6 @@ class ProfitAndLossController extends Controller
     public function getProfitAndLossSinceYesterday(array $symbols = ['MSFT','AAPL'], int $numberOfShares = 10): \Illuminate\Http\JsonResponse
     {
 
-        //TODO:: SANITISE THOSE INPUTS!!
         try{
             $data = $this->profitAndLossFacade->retrievePersistAndReturnProfitAndLoss($symbols, $numberOfShares);
             $responseCode = 200;
@@ -41,7 +40,7 @@ class ProfitAndLossController extends Controller
             //Assuming Server error for now
             $responseCode = 500;
 
-            //Global static :( TODO:: is there a better way?
+            //Global static - is there a better way?
             Log::error($exception->getMessage());
         }
         return response()->json($data, $responseCode);

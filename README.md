@@ -46,6 +46,7 @@ Though no explicit time constraint was placed on the delivery of this task, ther
 - Implement a strategy for percentage profit/loss calculations // Well beyond the scope of the current task but would be great given the strategy pattern allows it
 - Specific exceptions rather than generic exceptions to be thrown in the various places in the codebase
 - Separate class to handle input validation responsibilities outside of the facade class
+- More Unit Tests / Better test coverage
 
 
 

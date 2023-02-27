@@ -32,7 +32,7 @@ class GrossProfitAndLossTest extends TestCase
      */
     protected function getReadingMock(float $current, float $closing): \PHPUnit\Framework\MockObject\MockObject|StockDataReading
     {
-        $mockReading = $this->getMockBuilder(StockDataReading::class)->getMock();
+        $mockReading = $this->createMock(StockDataReading::class);
         $mockReading->method('getCurrentValue')->willReturn($current);
         $mockReading->method('getClosingValue')->willReturn($closing);
         return $mockReading;

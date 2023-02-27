@@ -15,11 +15,13 @@ class ProfitAndLossFacade
      * @param FinnhubAdapter $finnhubAdapter
      * @param StockDataReadingRepository $stockDataReadingRepository
      * @param ProfitAndLossStrategyInterface $profitAndLossStrategy
+     * @param ProfitAndLossFactory $profitAndLossFactory
      */
     public function __construct(
         private FinnhubAdapter $finnhubAdapter,
         private StockDataReadingRepository $stockDataReadingRepository,
-        private ProfitAndLossStrategyInterface $profitAndLossStrategy
+        private ProfitAndLossStrategyInterface $profitAndLossStrategy,
+        private ProfitAndLossFactory $profitAndLossFactory
     )
     {
 
@@ -64,8 +66,7 @@ class ProfitAndLossFacade
      */
     private function calculate(array $readings, int $numberOfShares = 1): ProfitAndLossDTO
     {
-        //TODO:: NOT HERE - Factory required
-        $dto = new ProfitAndLossDTO();
+        $dto = $this->profitAndLossFactory->getNewProfitAndLossDTO();
 
         /**
          * @var StockDataReading $reading
