@@ -106,12 +106,14 @@ class ProfitLossFacadeTest extends TestCase
 
 
     /**
-     * Simply tests that, given appropriate input, the dependencies are called as expected and a populated JSON response is returned
+     * Simply tests that, given appropriate input, the dependencies are called as expected
      * @throws \Exception
      */
-    public function testHappyPath()
+    public function testDependenciesAreCalledAppropriateNumberOfTimes()
     {
         $symbols = ['MSFT', 'AAPL'];
+
+        $numberOfSymbols = count($symbols);
 
         $adapterResponse = [];
         $adapterResponse['MSFT'] = $this->getStockArrayItem('MSFT', 22.24,19.23);
@@ -123,11 +125,11 @@ class ProfitLossFacadeTest extends TestCase
         $stockDataReading = $this->createMock(StockDataReading::class);
 
         $stockDataReadingRepoMock = $this->createMock(StockDataReadingRepository::class);
-        $stockDataReadingRepoMock->expects($this->exactly(2))->method('create');
-        $stockDataReadingRepoMock->expects($this->exactly(2))->method('getLatestReadingBySymbol')->willReturn($stockDataReading);
+        $stockDataReadingRepoMock->expects($this->exactly($numberOfSymbols))->method('create');
+        $stockDataReadingRepoMock->expects($this->exactly($numberOfSymbols))->method('getLatestReadingBySymbol')->willReturn($stockDataReading);
 
         $grossPLStrategyMock = $this->createMock(GrossProfitAndLossStrategy::class);
-        $grossPLStrategyMock->expects($this->exactly(2))->method('calculateProfitAndLoss');
+        $grossPLStrategyMock->expects($this->exactly($numberOfSymbols))->method('calculateProfitAndLoss');
 
         $facade = new ProfitAndLossFacade(
             $finnhubAdapterMock,
@@ -136,10 +138,6 @@ class ProfitLossFacadeTest extends TestCase
         );
 
         $dto = $facade->retrievePersistAndReturnProfitAndLoss($symbols);
-
-        echo $dto;
-
-
     }
 
 }

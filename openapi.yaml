@@ -1,0 +1,23 @@
+openapi: 3.0.3
+info:
+  title: 24h Profit and Loss Calculator for Microsoft and Apple Shares
+  description: |-
+    This is the OpenAPI spec for Delio profit and loss technical task as carried out by Michael McGettrick.
+  contact:
+    email: mcgettrick.michael@gmail.com
+  version: 1.0.0
+
+servers:
+  - url: YOUR_BASE_URL/api
+paths:
+  /profitandloss:
+    get:
+      tags:
+        - Profit and Loss
+      summary: Get the current profit/loss of 10 AAPL and 10 MSFT shares
+      description: Generates a response showing the change in value between now and the last close price of 10 MSFT and AAPL shares. Future updates will likely allow for specific symbols and quantities to be passed.
+      responses:
+        '200':
+          description: Returns a JSON object with the requested symbols (default, 'MSFT' and 'AAPL') as keys and the profit or loss since last close as a signed float.
+        '400':
+          description: Something went wrong, detailed error messages are hidden from the end user for security reasons. If the issue persists, please contact support.
