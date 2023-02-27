@@ -8,15 +8,12 @@ use PHPUnit\Framework\TestCase;
 
 class GrossProfitAndLossTest extends TestCase
 {
-    protected GrossProfitAndLossStrategy $grossProfitLossStrategy;
 
     /**
-     * General test data, current_value|closing_value|quantity|expected_result
-     * @var array|\float[][]
+     * @var GrossProfitAndLossStrategy $grossProfitLossStrategy
      */
-    protected array $testInputs =  [
-        [244.93,255.47,1,-10.54]
-    ];
+    protected GrossProfitAndLossStrategy $grossProfitLossStrategy;
+
 
     /**
      * Sets up the class for tests
