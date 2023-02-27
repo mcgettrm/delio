@@ -11,34 +11,18 @@ use App\Models\StockDataReading;
 class ProfitAndLossFacade
 {
     /**
-     * @var FinnhubAdapter $finnhubAdapter
-     */
-    private FinnhubAdapter $finnhubAdapter;
-
-    /**
-     * @var StockDataReadingRepository $stockDataReadingRepository
-     */
-    private StockDataReadingRepository $stockDataReadingRepository;
-
-    /**
-     * @var ProfitAndLossStrategyInterface
-     */
-    private ProfitAndLossStrategyInterface $profitAndLossStrategy;
-    /**
      * ProfitAndLossFacade constructor.
      * @param FinnhubAdapter $finnhubAdapter
      * @param StockDataReadingRepository $stockDataReadingRepository
      * @param ProfitAndLossStrategyInterface $profitAndLossStrategy
      */
     public function __construct(
-        FinnhubAdapter $finnhubAdapter,
-        StockDataReadingRepository $stockDataReadingRepository,
-        ProfitAndLossStrategyInterface $profitAndLossStrategy
+        private FinnhubAdapter $finnhubAdapter,
+        private StockDataReadingRepository $stockDataReadingRepository,
+        private ProfitAndLossStrategyInterface $profitAndLossStrategy
     )
     {
-        $this->finnhubAdapter = $finnhubAdapter;
-        $this->stockDataReadingRepository = $stockDataReadingRepository;
-        $this->profitAndLossStrategy = $profitAndLossStrategy;
+
     }
 
     /**

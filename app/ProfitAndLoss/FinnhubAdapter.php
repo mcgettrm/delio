@@ -29,19 +29,12 @@ class FinnhubAdapter
     private string $apiVersionPathString = "/v1";
 
     /**
-     * Token loaded from .env files that provides access to Finnhub
-     * @var string
-     */
-    private string $token = "";
-
-    /**
      * FinnhubAdapter constructor.
-     * @param string $finnhubToken
+     * @param string $token
      * @throws Exception
      */
-    public function __construct(string $finnhubToken)
+    public function __construct(private string $token)
     {
-        $this->token = $finnhubToken;
         if(strlen($this->token) === 0){
             throw new Exception('No Finnhub key configured on the server.');
         }
