@@ -28,14 +28,25 @@ class GrossProfitAndLossTest extends TestCase
     }
 
     /**
+     * Apply DRY: Gets a mock reading that will return the requested parameters
+     * @param float $current
+     * @param float $closing
+     */
+    protected function getReadingMock(float $current, float $closing): \PHPUnit\Framework\MockObject\MockObject|StockDataReading
+    {
+        $mockReading = $this->getMockBuilder(StockDataReading::class)->getMock();
+        $mockReading->method('getCurrentValue')->willReturn($current);
+        $mockReading->method('getClosingValue')->willReturn($closing);
+        return $mockReading;
+    }
+
+    /**
      * Tests that negative floats can be returned from the strategy.
      * @return void
      */
     public function test_resultCanBeNegative()
     {
-        $mockReading = $this->getMockBuilder(StockDataReading::class)->getMock();
-        $mockReading->method('getCurrentValue')->willReturn(244.93);
-        $mockReading->method('getClosingValue')->willReturn(255.47);
+        $mockReading = $this->getReadingMock(12.13,13.90);
 
         $actual = $this->grossProfitLossStrategy->calculateProfitAndLoss($mockReading);
         $this->assertLessThan(0.00, $actual, 'A negative float was not returned when appropriate.');
@@ -49,9 +60,7 @@ class GrossProfitAndLossTest extends TestCase
      *  2.0700000000000003 <-- we want such a number to be 2dp.
      */
     public function test_resultReturnsCorrectCalculationForSingleQuantity(){
-        $mockReading = $this->getMockBuilder(StockDataReading::class)->getMock();
-        $mockReading->method('getCurrentValue')->willReturn(41.20);
-        $mockReading->method('getClosingValue')->willReturn(39.13);
+        $mockReading = $this->getReadingMock(41.20,39.13);
 
         $actual = $this->grossProfitLossStrategy->calculateProfitAndLoss($mockReading);
         $expected = 2.07;
@@ -62,18 +71,15 @@ class GrossProfitAndLossTest extends TestCase
      * Tests that the gross profit and loss returned are appropraitely modified by the quantity of shares purchased
      */
     public function test_resultAppropriatelyModifiedByQuantity(){
-        $mockReading = $this->getMockBuilder(StockDataReading::class)->getMock();
-        $mockReading->method('getCurrentValue')->willReturn(13.20);
-        $mockReading->method('getClosingValue')->willReturn(13.13);
-
+        $mockReading = $this->getReadingMock(13.20, 13.13);
         $quantity = 100;
 
         $actual = $this->grossProfitLossStrategy->calculateProfitAndLoss($mockReading, $quantity);
         $expected = 7;
-        $this->assertEquals($expected,$actual, "Incorrect result returned for calculation. Expected: {$expected} actual: {$actual}");
+        $this->assertEquals($expected,$actual, "Quantity was not handled correctly. Expected: {$expected} actual: {$actual}");
     }
 
     public function test_GrossStrategyHandlesZeroQuantityGracefully(){
-        $this->markTestSkipped('To be revisted');
+        $this->markTestSkipped('To be revisited');
     }
 }
