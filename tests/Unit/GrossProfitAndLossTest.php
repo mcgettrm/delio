@@ -88,4 +88,18 @@ class GrossProfitAndLossTest extends TestCase
         $actual = $this->grossProfitLossStrategy->calculateProfitAndLoss($mockReading, 0);
         $this->assertEquals(0,$actual, "Gross strategy did not handle zero quantity correctly.");
     }
+
+    /**
+     * This test checks that the inputted values can be zero without causing any breakages
+     */
+    public function test_GrossStrategyHandlesZeroValueInputsGracefully(){
+        $mockReading = $this->getReadingMock(139.24, 0.0);
+        $actual = $this->grossProfitLossStrategy->calculateProfitAndLoss($mockReading);
+        $this->assertEquals(139.24,$actual, "Gross strategy did not handle zero closing value correctly.");
+
+        $mockReading = $this->getReadingMock(0.00, 34.90);
+        $actual = $this->grossProfitLossStrategy->calculateProfitAndLoss($mockReading);
+
+        $this->assertEquals(-34.90,$actual, "Gross strategy did not handle zero current value correctly.");
+    }
 }
