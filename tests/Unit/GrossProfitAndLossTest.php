@@ -37,7 +37,7 @@ class GrossProfitAndLossTest extends TestCase
         $mockReading->method('getCurrentValue')->willReturn(244.93);
         $mockReading->method('getClosingValue')->willReturn(255.47);
 
-        $actual = $this->grossProfitLossStrategy->calculateProfitAndLoss($mockReading, 1);
+        $actual = $this->grossProfitLossStrategy->calculateProfitAndLoss($mockReading);
         $this->assertLessThan(0.00, $actual, 'A negative float was not returned when appropriate.');
     }
 
@@ -53,9 +53,27 @@ class GrossProfitAndLossTest extends TestCase
         $mockReading->method('getCurrentValue')->willReturn(41.20);
         $mockReading->method('getClosingValue')->willReturn(39.13);
 
-        $actual = $this->grossProfitLossStrategy->calculateProfitAndLoss($mockReading, 1);
+        $actual = $this->grossProfitLossStrategy->calculateProfitAndLoss($mockReading);
         $expected = 2.07;
         $this->assertEquals($expected,$actual, "Incorrect result returned for calculation. Expected: {$expected} actual: {$actual}");
     }
 
+    /**
+     * Tests that the gross profit and loss returned are appropraitely modified by the quantity of shares purchased
+     */
+    public function test_resultAppropriatelyModifiedByQuantity(){
+        $mockReading = $this->getMockBuilder(StockDataReading::class)->getMock();
+        $mockReading->method('getCurrentValue')->willReturn(13.20);
+        $mockReading->method('getClosingValue')->willReturn(13.13);
+
+        $quantity = 100;
+
+        $actual = $this->grossProfitLossStrategy->calculateProfitAndLoss($mockReading, $quantity);
+        $expected = 7;
+        $this->assertEquals($expected,$actual, "Incorrect result returned for calculation. Expected: {$expected} actual: {$actual}");
+    }
+
+    public function test_GrossStrategyHandlesZeroQuantityGracefully(){
+        $this->markTestSkipped('To be revisted');
+    }
 }
