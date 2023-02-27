@@ -8,6 +8,7 @@ use App\ProfitAndLoss\FinnhubAdapter;
 use App\ProfitAndLoss\GrossProfitAndLossStrategy;
 use App\ProfitAndLoss\ProfitAndLossFacade;
 use App\ProfitAndLoss\ProfitAndLossFactory;
+use App\ProfitAndLoss\StockDataDTO;
 use App\ProfitAndLoss\StockDataReadingRepository;
 use JetBrains\PhpStorm\Pure;
 use PHPUnit\Framework\TestCase;
@@ -94,17 +95,11 @@ class ProfitLossFacadeTest extends TestCase
      * @param string $symbol
      * @param float $current
      * @param float $closing
-     * @return array
+     * @return StockDataDTO
      */
-    protected function getStockArrayItem(string $symbol, float $current, float $closing)
+    protected function getStockArrayItem(string $symbol, float $current, float $closing): StockDataDTO
     {
-        $array = [];
-        $array['symbol'] = $symbol;
-        $array['current_value'] = $current;
-        $array['previous_day_close_value'] = $closing;
-        $array['effective_date'] = date('Y-m-d H:i:s');
-
-        return $array;
+        return new StockDataDTO($symbol,$current, $closing, date('Y-m-d H:i:s'));
     }
 
 
