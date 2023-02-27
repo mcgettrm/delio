@@ -31,6 +31,7 @@ class GrossProfitAndLossTest extends TestCase
      * Apply DRY: Gets a mock reading that will return the requested parameters
      * @param float $current
      * @param float $closing
+     * @return StockDataReading|\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getReadingMock(float $current, float $closing): \PHPUnit\Framework\MockObject\MockObject|StockDataReading
     {
@@ -68,7 +69,7 @@ class GrossProfitAndLossTest extends TestCase
     }
 
     /**
-     * Tests that the gross profit and loss returned are appropraitely modified by the quantity of shares purchased
+     * Tests that the gross profit and loss returned are appropriately modified by the quantity of shares purchased
      */
     public function test_resultAppropriatelyModifiedByQuantity(){
         $mockReading = $this->getReadingMock(13.20, 13.13);
@@ -79,7 +80,12 @@ class GrossProfitAndLossTest extends TestCase
         $this->assertEquals($expected,$actual, "Quantity was not handled correctly. Expected: {$expected} actual: {$actual}");
     }
 
+    /**
+     * Check that edge cases are handled correctly
+     */
     public function test_GrossStrategyHandlesZeroQuantityGracefully(){
-        $this->markTestSkipped('To be revisited');
+        $mockReading = $this->getReadingMock(139.24, 34.90);
+        $actual = $this->grossProfitLossStrategy->calculateProfitAndLoss($mockReading, 0);
+        $this->assertEquals(0,$actual, "Gross strategy did not handle zero quantity correctly.");
     }
 }
