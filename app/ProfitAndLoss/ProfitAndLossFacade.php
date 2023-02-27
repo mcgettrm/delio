@@ -87,6 +87,7 @@ class ProfitAndLossFacade
          * @var StockDataReading $reading
          */
         foreach($readings as $reading){
+
             $pl = $this->profitAndLossStrategy->calculateProfitAndLoss($reading, $numberOfShares);
             $symbol = $reading->getSymbol();
             $dto->setSymbolProfitAndLoss($symbol, $pl);

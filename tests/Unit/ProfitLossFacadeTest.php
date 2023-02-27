@@ -97,7 +97,7 @@ class ProfitLossFacadeTest extends TestCase
     {
         $array = [];
         $array['symbol'] = $symbol;
-        $array['current_value'] = $current
+        $array['current_value'] = $current;
         $array['previous_day_close_value'] = $closing;
         $array['effective_date'] = date('Y-m-d H:i:s');
 
@@ -118,15 +118,15 @@ class ProfitLossFacadeTest extends TestCase
         $adapterResponse['AAPL'] = $this->getStockArrayItem('AAPL', 21.23,15.29);
 
         $finnhubAdapterMock = $this->createMock(FinnhubAdapter::class);
-        $finnhubAdapterMock->expects($this->once())->method('getStockDataForSymbols');
-        $finnhubAdapterMock->method('getStockDataForSymbols')->willReturn($adapterResponse);
+        $finnhubAdapterMock->expects($this->once())->method('getStockDataForSymbols')->willReturn($adapterResponse);
+
+        $stockDataReading = $this->createMock(StockDataReading::class);
 
         $stockDataReadingRepoMock = $this->createMock(StockDataReadingRepository::class);
         $stockDataReadingRepoMock->expects($this->exactly(2))->method('create');
-        $stockDataReadingRepoMock->expects($this->exactly(2))->method('getLatestReadingBySymbol');
-        $stockDataReadingRepoMock->method('getLatestReadingBySymbol')->willReturn($this->createMock(StockDataReading::class));
+        $stockDataReadingRepoMock->expects($this->exactly(2))->method('getLatestReadingBySymbol')->willReturn($stockDataReading);
 
-        $grossPLStrategyMock = $this->getMockBuilder(GrossProfitAndLossStrategy::class)->getMock();
+        $grossPLStrategyMock = $this->createMock(GrossProfitAndLossStrategy::class);
         $grossPLStrategyMock->expects($this->exactly(2))->method('calculateProfitAndLoss');
 
         $facade = new ProfitAndLossFacade(
