@@ -47,6 +47,7 @@ Though no explicit time constraint was placed on the delivery of this task, ther
 - Specific exceptions rather than generic exceptions to be thrown in the various places in the codebase
 - Separate class to handle input validation responsibilities outside of the facade class
 - More Unit Tests / Better test coverage
+- Should the Adapter simply return a stock model rather than a DTO?
 
 
 

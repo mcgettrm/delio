@@ -20,10 +20,14 @@ class ProfitAndLossFactory
     }
 
     /***
+     * @param string $symbol
+     * @param float $currentValue
+     * @param float $closeValue
+     * @param string $effectiveDate
      * @return StockDataDTO
      */
-    public function getNewStockDataDTO(): StockDataDTO
+    public function getNewStockDataDTO(string $symbol, float $currentValue, float $closeValue, string $effectiveDate): StockDataDTO
     {
-        return new StockDataDTO();
+        return new StockDataDTO($symbol, $currentValue, $closeValue, $effectiveDate);
     }
 }

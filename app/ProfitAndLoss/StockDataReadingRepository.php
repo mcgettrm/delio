@@ -15,10 +15,15 @@ class StockDataReadingRepository
 
     /**
      * Takes an array of data and inserts it into the stock data model / db
-     * @param array $rowData
+     * @param StockDataDTO $dto
      */
-    public function create(array $rowData):void
+    public function create(StockDataDTO $dto):void
     {
+        $rowData = [];
+        $rowData['symbol'] = $dto->getSymbol();
+        $rowData['current_value'] = $dto->getCurrentValue();
+        $rowData['previous_day_close_value'] = $dto->getCloseValue();
+        $rowData['effective_date'] = $dto->getEffectiveDate();
         StockDataReading::create($rowData);
     }
 

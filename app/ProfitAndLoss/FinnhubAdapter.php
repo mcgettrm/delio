@@ -31,9 +31,13 @@ class FinnhubAdapter
     /**
      * FinnhubAdapter constructor.
      * @param string $token
+     * @param ProfitAndLossFactory $profitAndLossFactory
      * @throws Exception
      */
-    public function __construct(private string $token)
+    public function __construct(
+        private string $token,
+        private ProfitAndLossFactory $profitAndLossFactory
+    )
     {
         if(strlen($this->token) === 0){
             throw new Exception('No Finnhub key configured on the server.');
@@ -51,15 +55,12 @@ class FinnhubAdapter
         $stockData = [];
         foreach($symbols as $symbol){
             $symbolData = $this->getPricesForSymbol($symbol);
-            $cleanData = [];
-            $cleanData['symbol'] = $symbol;
-            $cleanData['current_value'] = $symbolData['c'];
-            $cleanData['previous_day_close_value'] = $symbolData['pc'];
-            $cleanData['effective_date'] = date('Y-m-d H:i:s', $symbolData['t']);
-            $stockData[$symbol] = $cleanData;
-        }
+            $dto = $this->profitAndLossFactory->getNewStockDataDTO($symbol, $symbolData['c'], $symbolData['pc'], date('Y-m-d H:i:s', $symbolData['t']));
 
-        //TODO::Return a DTO
+            //Array of DTOs - doesn't quite feel right. Better than an array of arrays, though....
+            $stockData[$symbol] = $dto;
+
+        }
 
         //For each symbol, should return the current price and yesterday's closing price.
         return $stockData;

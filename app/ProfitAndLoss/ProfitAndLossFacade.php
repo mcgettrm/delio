@@ -101,6 +101,9 @@ class ProfitAndLossFacade
      */
     private function persist(array $data): void
     {
+        /**
+         * @var StockDataDTO $datum
+         */
         foreach($data as $datum){
             $this->stockDataReadingRepository->create($datum);
         }
