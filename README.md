@@ -43,7 +43,6 @@ Assuming WSL2 and Docker are installed and available you can use Laravel's inbui
 
 ### Further Considerations:
 Though no explicit time constraint was placed on the delivery of this task, there are a number of considerations identified throughout development that would make candidates for future improvement:
-- Use Docker
 - Is the .env file the best place for API token?
 - Use Finnhub PHP library? // Ran into problems with Laravel Guzzle version conflicts
 - Are the DTOs a bit too loose?
