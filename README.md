@@ -19,18 +19,30 @@ This was the initial target system design:
 
 ### Setup Instructions
 * Register for an API Token at https://finnhub.io/register
+* Checkout the repository into a location of your choise using Git
 * Add your database connection details to the .env file in the root of this project
 * Add your API Token to the .env file in the root of this project
-* Run `php artisan migrate` to set up the database
+
+#### Using Docker/Sail
+Assuming WSL2 and Docker are installed and available you can use Laravel's inbuilt Sail functionality to set up the environment locally.
+* Open up an elevated WSL2 terminal
+* Navigate to the webroot of the checked out repository
+* Run `.\vendor\bin\sail up` and wait for the Docker containers to build
+* At this point, the root route of the site will now be available at `localhost` but errors will be thrown because the database has not been built yet
+* Migrate the database `./vendor/bin/sail artisan migrate`
+* Navigate to `localhost/api/profitandloss` to receive your first P&L assessment
+  
+#### Local Environment
+* Run `php artisan migrate` from the root of the installed repository to set up the database
+* Configure your hosts file and apache virtual hosts appropriately
 * Navigate to `{YOUR_HOSTNAME}/api/profitandloss` to see your first calculation
 
 ### Dependencies
-- PHP 8.1.16
-- MySQL 5.7.26
+- PHP 8.1.16+
+- MySQL 5.7.26+
 
 ### Further Considerations:
 Though no explicit time constraint was placed on the delivery of this task, there are a number of considerations identified throughout development that would make candidates for future improvement:
-- Use Docker
 - Is the .env file the best place for API token?
 - Use Finnhub PHP library? // Ran into problems with Laravel Guzzle version conflicts
 - Are the DTOs a bit too loose?
